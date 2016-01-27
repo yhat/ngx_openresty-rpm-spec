@@ -22,7 +22,7 @@ Requires(pre):	shadow-utils
 OpenResty (aka. ngx_openresty) is a full-fledged web application server by bundling the standard Nginx core,
 lots of 3rd-party Nginx modules, as well as most of their external dependencies.
 
-OpenResty is not an Nginx fork. It is just a software bundle. 
+OpenResty is not an Nginx fork. It is just a software bundle.
 
 The following NGINX modules are enabled with this package:
 http_iconv_module
@@ -64,8 +64,6 @@ lua51
 %build
 ./configure --prefix=%{homedir} \
 --with-http_iconv_module \
---with-http_postgres_module \
---with-pg_config=/usr/bin/pg_config \
 --with-select_module \
 --with-poll_module \
 --with-file-aio \
