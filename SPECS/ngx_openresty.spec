@@ -1,5 +1,5 @@
 Name:		ngx_openresty
-Version:	1.9.3.1
+Version:	1.9.7.2
 Release:	2%{?dist}
 Summary:	a fast web app server by extending nginx
 Distribution: CentOS 7
@@ -8,7 +8,6 @@ Group:		Productivity/Networking/Web/Servers
 License:	BSD
 URL:		openresty.org
 Source0:	http://openresty.org/download/%{name}-%{version}.tar.gz
-Source1:	https://raw.githubusercontent.com/williamcaban/ngx_openresty-rpm-spec/master/SOURCES/ngx_openresty.service
 Packager:   William Caban <william.caban@savantadvisors.com>
 
 BuildRequires:	sed git make gcc readline-devel pcre-devel openssl-devel gcc pcre-devel libxml2-devel libxslt-devel gd-devel geoip-devel gperftools-devel libatomic_ops-devel lua-devel
