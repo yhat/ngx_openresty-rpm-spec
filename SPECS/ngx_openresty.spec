@@ -1,5 +1,5 @@
 Name:		ngx_openresty
-Version:	1.9.3.1
+Version:	1.9.7.2
 Release:	2%{?dist}
 Summary:	a fast web app server by extending nginx
 Distribution: CentOS 7
@@ -8,11 +8,10 @@ Group:		Productivity/Networking/Web/Servers
 License:	BSD
 URL:		openresty.org
 Source0:	http://openresty.org/download/%{name}-%{version}.tar.gz
-Source1:	https://raw.githubusercontent.com/williamcaban/ngx_openresty-rpm-spec/master/SOURCES/ngx_openresty.service
 Packager:   William Caban <william.caban@savantadvisors.com>
 
-BuildRequires:	sed git make gcc postgresql-devel readline-devel pcre-devel openssl-devel gcc pcre-devel libxml2-devel libxslt-devel gd-devel geoip-devel gperftools-devel libatomic_ops-devel lua-devel
-Requires:	postgresql readline pcre openssl pcre libxml2 libxslt gd geoip gperftools libatomic
+BuildRequires:	sed git make gcc readline-devel pcre-devel openssl-devel gcc pcre-devel libxml2-devel libxslt-devel gd-devel geoip-devel gperftools-devel libatomic_ops-devel lua-devel
+Requires:	readline pcre openssl pcre libxml2 libxslt gd geoip gperftools libatomic
 Requires(pre):	shadow-utils
 
 %define user nginx
@@ -22,11 +21,10 @@ Requires(pre):	shadow-utils
 OpenResty (aka. ngx_openresty) is a full-fledged web application server by bundling the standard Nginx core,
 lots of 3rd-party Nginx modules, as well as most of their external dependencies.
 
-OpenResty is not an Nginx fork. It is just a software bundle. 
+OpenResty is not an Nginx fork. It is just a software bundle.
 
 The following NGINX modules are enabled with this package:
 http_iconv_module
-http_postgres_module
 select_module
 poll_module
 file-aio
@@ -64,8 +62,6 @@ lua51
 %build
 ./configure --prefix=%{homedir} \
 --with-http_iconv_module \
---with-http_postgres_module \
---with-pg_config=/usr/bin/pg_config \
 --with-select_module \
 --with-poll_module \
 --with-file-aio \
