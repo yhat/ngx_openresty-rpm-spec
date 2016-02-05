@@ -1,13 +1,12 @@
 FROM centos:7
 
 RUN yum groupinstall -y "Development Tools"
-RUN mkdir -p /home/root/
 
-WORKDIR /home/root/
+WORKDIR /root/
 
-COPY SOURCES /home/root/SOURCES/
-COPY SPECS /home/root/SPECS/
-COPY Makefile /home/root/
-COPY BUILD-and-INSTALL.sh /home/root/
+COPY SOURCES /root/SOURCES/
+COPY SPECS /root/SPECS/
+COPY Makefile /root/
+COPY BUILD-and-INSTALL.sh /root/
 
 RUN make
