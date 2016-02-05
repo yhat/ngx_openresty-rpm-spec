@@ -1,0 +1,41 @@
+# Inspired by https://robots.thoughtbot.com/configure-circleci-for-go
+machine:
+  services:
+    - docker
+  environment:
+    S3_BUCKET: yhat-build
+    # Go friendly import format e.g. github.com/yhat/events
+    IMPORT_PATH: "github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME"
+    # Where this build will take place
+    WORKING_PATH: "/home/ubuntu/.go_workspace/src/$IMPORT_PATH"
+    # Branch converted from task/foo to task_foo
+    BRANCH: $(echo $CIRCLE_BRANCH | sed -e 's/\//-/g')
+    BUILD: $(echo $CIRCLE_BUILD_NUM )
+    SHORT_REV: $(echo $CIRCLE_SHA1 | cut -c1-7)
+    # e.g. events-master-8-18e6da2
+    BUILD_NAME: $(echo $CIRCLE_PROJECT_REPONAME-$BRANCH-$BUILD-$SHORT_REV)
+    RELEASE_NAME: "metrics_server.${SHORT_REV}.tgz"
+
+dependencies:
+  pre:
+    - docker pull centos:7
+
+test:
+  override:
+    # We just run make in place of a test
+    - docker build -t ngx .
+  post:
+    # This actually builds all the versions we need
+    - docker cp ngx:/root/rpmbuild/RPMS/x86_64/ngx_openresty-1.9.7.2-3.el7.centos.x86_64.rpm .
+
+general:
+  artifacts:
+    - *.rpm
+
+
+# deployment:
+#   all:
+#     branch: /.*/
+#     commands:
+#       # Copy up the tarball
+#       - aws s3 cp build/$RELEASE_NAME s3://$S3_BUCKET/$CIRCLE_PROJECT_REPONAME/artifacts/$BUILD_NAME.tgz
