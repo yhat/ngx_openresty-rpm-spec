@@ -1,5 +1,10 @@
 # Inspired by https://robots.thoughtbot.com/configure-circleci-for-go
 machine:
+  pre:
+    # Fix for docker cp https://discuss.circleci.com/t/unable-to-use-docker-cp-but-it-worked-2-days-ago/1137/8
+    - echo 'DOCKER_OPTS="-s btrfs -e lxc -D --userland-proxy=false"' | sudo tee -a /etc/default/docker
+    - sudo curl -L -o /usr/bin/docker 'https://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.0-circleci-cp-workaround'
+    - sudo chmod 0755 /usr/bin/docker
   services:
     - docker
   environment:
@@ -27,8 +32,7 @@ test:
   post:
     # This actually builds all the versions we need
     - mkdir build
-    - docker cp ngx:/root/rpmbuild/RPMS/x86_64/ngx_openresty-1.9.7.2-3.el7.centos.x86_64.rpm ./build/
-
+    - docker cp $(docker ps | grep ngx | tr -s ' ' | rev | cut -d ' ' -f1 | rev):/root/rpmbuild/RPMS/x86_64/ngx_openresty-1.9.7.2-3.el7.centos.x86_64.rpm ./build/
 general:
   artifacts:
     - "build"
