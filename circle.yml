@@ -32,7 +32,8 @@ test:
   post:
     - mkdir build
     - >
-      docker run -t ngx /usr/bin/sleep 5 &
+      docker run -t ngx /usr/bin/sleep 10 & PIDSLEEP=$!
+      sleep 5 && 
       docker cp
       $(docker ps | grep ngx | tr -s ' ' | rev | cut -d ' ' -f1 | rev):/root/rpmbuild/RPMS/x86_64/ngx_openresty-1.9.7.2-3.el7.centos.x86_64.rpm
       ./build/
