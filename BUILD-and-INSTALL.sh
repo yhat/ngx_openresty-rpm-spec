@@ -1,5 +1,11 @@
 #!/bin/bash
 #
+
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
 HERE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 VERSION=1.9.7.2
 RELEASE=3
@@ -17,8 +23,8 @@ fi
 install_required_packages()
 {
 	echo -e "\nInstalling packages required to build RPMs...."
-	sudo yum -y install epel-release
-	sudo yum -y install git make gcc sed postgresql-devel readline-devel \
+	yum -y install epel-release
+	yum -y install git make gcc sed postgresql-devel readline-devel \
 	pcre-devel openssl-devel gcc pcre-devel libxml2-devel libxslt-devel \
 	gd-devel geoip-devel gperftools-devel libatomic_ops-devel rpm-build \
 	gperftools-devel lua-devel
@@ -46,7 +52,7 @@ build_package()
 install_test_package()
 {
 	echo -e "\nInstalling package and dependencies...."
-	sudo yum -y install /home/${USER}/rpmbuild/RPMS/x86_64/ngx_openresty-${VERSION}-${RELEASE}.el7.centos.x86_64.rpm
+	yum -y install /home/${USER}/rpmbuild/RPMS/x86_64/ngx_openresty-${VERSION}-${RELEASE}.el7.centos.x86_64.rpm
 }
 
 if [[ $UNATTENDED == 0 ]] ; then
