@@ -35,7 +35,7 @@ test:
       docker run -t ngx /usr/bin/sleep 10 & PIDSLEEP=$!
       sleep 5 &&
       docker cp
-      $(docker ps | grep ngx | tr -s ' ' | rev | cut -d ' ' -f1 | rev):/root/rpmbuild/RPMS/x86_64/ngx_openresty-1.9.7.2-3.el7.centos.x86_64.rpm
+      $(docker ps | grep ngx | tr -s ' ' | rev | cut -d ' ' -f1 | rev):/root/rpmbuild/RPMS/x86_64/$RELEASE_NAME
       ./build/
 general:
   artifacts:
@@ -49,7 +49,9 @@ deployment:
       # root of the artifacts prefix with a name including the sha
       - aws s3 cp build/$RELEASE_NAME s3://$S3_BUCKET/$CIRCLE_PROJECT_REPONAME/artifacts/$BUILD_NAME.rpm
       # and the rpm release name
-      - aws s3 cp build/$RELEASE_NAME s3://$S3_BUCKET/$CIRCLE_PROJECT_REPONAME/artifacts/$RELEASE_NAME.rpm
+      - aws s3 cp build/$RELEASE_NAME s3://$S3_BUCKET/$CIRCLE_PROJECT_REPONAME/artifacts/$RELEASE_NAME
+      # and the release prefix
+      - aws s3 cp build/$RELEASE_NAME s3://$S3_BUCKET/$CIRCLE_PROJECT_REPONAME/release/$RELEASE_NAME
       # TODO Put in actual yum repo
   all:
     branch: /.*/
